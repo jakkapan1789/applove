@@ -1,0 +1,106 @@
+@font-face {
+  font-family: 'Kanit';
+  src: url('./fonts/Kanit-Regular.ttf') format('truetype');
+}
+
+body {
+  font-family: 'Kanit', sans-serif;
+}
+.popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    transition: opacity 0.3s ease; 
+  }
+  
+  .popup-card {
+    position: relative;
+    background-color: #fff;
+    padding: 32px;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    max-width: 500px;
+    width: 100%;
+    margin:   25px;
+  }
+  
+  .popup-close {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    background-color: transparent;
+   border: none;
+    font-size: 24px;
+    font-weight: bold;
+    color: #000000CC;
+    cursor: pointer;
+  }
+  
+  .popup-content {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+  }
+  
+  .popup-icon {
+    width: 64px;
+    height: 64px;
+    margin-bottom: 16px;
+  }
+  
+  .popup-content strong {
+    font-size: 24px;
+    color: #000000CC;
+  }
+  
+  .popup-content p {
+    font-size: 18px;
+    color: #000000CC;
+    text-align: center;
+  }
+  
+
+  .button-container {
+    margin-top: 10px;
+  }
+  
+  button {
+    font-family: 'Kanit', sans-serif;
+    margin-top: 5px;
+    height: 40px;
+    width: 80px;
+    border: none;
+    border-radius: 15px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    background-color: #000000CC;
+    color: white;
+  }
+  
+  button.yes-button {
+    margin-right: 5px;
+    background-color: #000000CC;
+    color: white;
+  }
+  
+  button.no-button {
+    margin-left: 5px;
+    background-color: white;
+    color: #000000CC;
+    border: 1px solid #000000CC;
+  }
+  
+  button.no-button:hover {
+    background-color: white;
+    color: #000000CC;
+  }
