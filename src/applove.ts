@@ -17,8 +17,9 @@ const svgIcon = (type: string): string => {
 };
 
 export const applove = {
-  confirm: ({ title, confirmButtonLabel = "Confirm", cancelButtonLabel = "Cancel", type = "question" }: ConfirmOption): Promise<Response> => {
+  confirm: ({ title = "Please confirm", confirmButtonLabel = "Confirm", cancelButtonLabel = "Cancel", type = "question" }: ConfirmOption): Promise<Response> => {
     return new Promise<Response>((resolve, reject) => {
+
       const overlay = document.createElement("div");
       overlay.className = "popup-overlay";
       const card = document.createElement("div");
@@ -29,15 +30,21 @@ export const applove = {
       strong.textContent = title;
       const buttonContainer = document.createElement("div");
       buttonContainer.className = "button-container";
+
       const yesButton = document.createElement("button");
-      yesButton.className = "yes-button";
+      yesButton.className = "btn-default true-button";
       yesButton.textContent = confirmButtonLabel;
+
       const noButton = document.createElement("button");
-      noButton.className = "no-button";
+      noButton.className = "btn-default false-button";
       noButton.textContent = cancelButtonLabel;
-      const svgStr: string = svgIcon(type);
+
+      const svgStr = svgIcon(type);
       const parser = new DOMParser();
-      const svgElement = parser.parseFromString(svgStr, 'image/svg+xml').documentElement;
+      const svgElement = parser.parseFromString(
+        svgStr,
+        "image/svg+xml"
+      ).documentElement;
 
       buttonContainer.appendChild(yesButton);
       buttonContainer.appendChild(noButton);
@@ -51,24 +58,91 @@ export const applove = {
       yesButton.addEventListener("click", () => {
         const response: Response = { result: true, detail: "" };
         resolve(response);
-
-        closeDialog();
+        close();
       });
       noButton.addEventListener("click", () => {
         const response: Response = { result: false, detail: "" };
         resolve(response);
-        closeDialog();
+        close();
       });
+      setTimeout(() => {
+        overlay.classList.add("open");
+        card.classList.add("open");
+      }, 10);
 
-      const closeDialog = () => {
-        overlay.remove();
+      const close = () => {
+        const overlay = document.querySelector(".popup-overlay");
+        const card = document.querySelector(".popup-card");
+
+        if (overlay && card) {
+          overlay.classList.remove("open");
+          card.classList.remove("open");
+
+          setTimeout(() => {
+            overlay.remove();
+          }, 300);
+        }
+      };
+
+    });
+  },
+
+  success: ({ title = "Example", ExitButtonLabel = "Close" }: GeneralOption): void => {
+    const overlay = document.createElement("div");
+    overlay.className = "popup-overlay";
+    const card = document.createElement("div");
+    card.className = "popup-card";
+    const content = document.createElement("div");
+    content.className = "popup-content";
+    const strong = document.createElement("strong");
+    strong.textContent = title;
+    const buttonContainer = document.createElement("div");
+    buttonContainer.className = "button-container";
+
+    const yesButton = document.createElement("button");
+    yesButton.className = "btn-default true-button";
+    yesButton.textContent = ExitButtonLabel;
+
+    const svgStr = svgIcon("success");
+    const parser = new DOMParser();
+    const svgElement = parser.parseFromString(
+      svgStr,
+      "image/svg+xml"
+    ).documentElement;
+
+    buttonContainer.appendChild(yesButton);
+    content.appendChild(svgElement);
+    content.appendChild(strong);
+    content.appendChild(buttonContainer);
+    card.appendChild(content);
+    overlay.appendChild(card);
+    document.body.appendChild(overlay);
+
+    yesButton.addEventListener("click", () => {
+      close();
+    });
+
+    setTimeout(() => {
+      overlay.classList.add("open");
+      card.classList.add("open");
+    }, 10);
+
+    const close = () => {
+      const overlay = document.querySelector(".popup-overlay");
+      const card = document.querySelector(".popup-card");
+
+      if (overlay && card) {
+        overlay.classList.remove("open");
+        card.classList.remove("open");
+
+        setTimeout(() => {
+          overlay.remove();
+        }, 300);
       }
-
-
-    });
+    };
   },
 
-  success: ({ title, ExitButtonLabel = "Ok" }: GeneralOption): void => {
+  error: ({ title = "Example", ExitButtonLabel = "Close" }: GeneralOption): void => {
     const overlay = document.createElement("div");
     overlay.className = "popup-overlay";
     const card = document.createElement("div");
@@ -79,13 +153,18 @@ export const applove = {
     strong.textContent = title;
     const buttonContainer = document.createElement("div");
     buttonContainer.className = "button-container";
+
     const yesButton = document.createElement("button");
-    yesButton.className = "yes-button";
+    yesButton.className = "btn-default true-button";
     yesButton.textContent = ExitButtonLabel;
 
-    const svgStr: string = svgIcon("success");
+    const svgStr = svgIcon("error");
     const parser = new DOMParser();
-    const svgElement = parser.parseFromString(svgStr, 'image/svg+xml').documentElement;
+    const svgElement = parser.parseFromString(
+      svgStr,
+      "image/svg+xml"
+    ).documentElement;
+
     buttonContainer.appendChild(yesButton);
     content.appendChild(svgElement);
     content.appendChild(strong);
@@ -93,16 +172,31 @@ export const applove = {
     card.appendChild(content);
     overlay.appendChild(card);
     document.body.appendChild(overlay);
+
     yesButton.addEventListener("click", () => {
-      const response: Response = { result: true, detail: "" };
-      closeDialog();
+      close();
     });
 
-    const closeDialog = () => {
-      overlay.remove();
+    setTimeout(() => {
+      overlay.classList.add("open");
+      card.classList.add("open");
+    }, 10);
+
+    const close = () => {
+      const overlay = document.querySelector(".popup-overlay");
+      const card = document.querySelector(".popup-card");
+
+      if (overlay && card) {
+        overlay.classList.remove("open");
+        card.classList.remove("open");
+
+        setTimeout(() => {
+          overlay.remove();
+        }, 300);
+      }
     };
   },
-  error: ({ title, ExitButtonLabel = "Ok" }: GeneralOption): void => {
+  warning: ({ title = "Example", ExitButtonLabel = "Close" }: GeneralOption): void => {
     const overlay = document.createElement("div");
     overlay.className = "popup-overlay";
     const card = document.createElement("div");
@@ -113,13 +207,18 @@ export const applove = {
     strong.textContent = title;
     const buttonContainer = document.createElement("div");
     buttonContainer.className = "button-container";
+
     const yesButton = document.createElement("button");
-    yesButton.className = "yes-button";
+    yesButton.className = "btn-default true-button";
     yesButton.textContent = ExitButtonLabel;
 
-    const svgStr: string = svgIcon("error");
+    const svgStr = svgIcon("warning");
     const parser = new DOMParser();
-    const svgElement = parser.parseFromString(svgStr, 'image/svg+xml').documentElement;
+    const svgElement = parser.parseFromString(
+      svgStr,
+      "image/svg+xml"
+    ).documentElement;
+
     buttonContainer.appendChild(yesButton);
     content.appendChild(svgElement);
     content.appendChild(strong);
@@ -127,16 +226,31 @@ export const applove = {
     card.appendChild(content);
     overlay.appendChild(card);
     document.body.appendChild(overlay);
+
     yesButton.addEventListener("click", () => {
-      const response: Response = { result: true, detail: "" };
-      closeDialog();
+      close();
     });
 
-    const closeDialog = () => {
-      overlay.remove();
+    setTimeout(() => {
+      overlay.classList.add("open");
+      card.classList.add("open");
+    }, 10);
+
+    const close = () => {
+      const overlay = document.querySelector(".popup-overlay");
+      const card = document.querySelector(".popup-card");
+
+      if (overlay && card) {
+        overlay.classList.remove("open");
+        card.classList.remove("open");
+
+        setTimeout(() => {
+          overlay.remove();
+        }, 300);
+      }
     };
   },
-  warning: ({ title, ExitButtonLabel = "Ok" }: GeneralOption): void => {
+  info: ({ title = "Example", ExitButtonLabel = "Close" }: GeneralOption): void => {
     const overlay = document.createElement("div");
     overlay.className = "popup-overlay";
     const card = document.createElement("div");
@@ -147,13 +261,18 @@ export const applove = {
     strong.textContent = title;
     const buttonContainer = document.createElement("div");
     buttonContainer.className = "button-container";
+
     const yesButton = document.createElement("button");
-    yesButton.className = "yes-button";
+    yesButton.className = "btn-default true-button";
     yesButton.textContent = ExitButtonLabel;
 
-    const svgStr: string = svgIcon("warning");
+    const svgStr = svgIcon("info");
     const parser = new DOMParser();
-    const svgElement = parser.parseFromString(svgStr, 'image/svg+xml').documentElement;
+    const svgElement = parser.parseFromString(
+      svgStr,
+      "image/svg+xml"
+    ).documentElement;
+
     buttonContainer.appendChild(yesButton);
     content.appendChild(svgElement);
     content.appendChild(strong);
@@ -161,49 +280,30 @@ export const applove = {
     card.appendChild(content);
     overlay.appendChild(card);
     document.body.appendChild(overlay);
+
     yesButton.addEventListener("click", () => {
-      const response: Response = { result: true, detail: "" };
-      closeDialog();
+      close();
     });
 
-    const closeDialog = () => {
-      overlay.remove();
+    setTimeout(() => {
+      overlay.classList.add("open");
+      card.classList.add("open");
+    }, 10);
+
+    const close = () => {
+      const overlay = document.querySelector(".popup-overlay");
+      const card = document.querySelector(".popup-card");
+
+      if (overlay && card) {
+        overlay.classList.remove("open");
+        card.classList.remove("open");
+
+        setTimeout(() => {
+          overlay.remove();
+        }, 300);
+      }
     };
   },
-  info: ({ title, ExitButtonLabel = "Ok" }: GeneralOption): void => {
-    const overlay = document.createElement("div");
-    overlay.className = "popup-overlay";
-    const card = document.createElement("div");
-    card.className = "popup-card";
-    const content = document.createElement("div");
-    content.className = "popup-content";
-    const strong = document.createElement("strong");
-    strong.textContent = title;
-    const buttonContainer = document.createElement("div");
-    buttonContainer.className = "button-container";
-    const yesButton = document.createElement("button");
-    yesButton.className = "yes-button";
-    yesButton.textContent = ExitButtonLabel;
-
-    const svgStr: string = svgIcon("info");
-    const parser = new DOMParser();
-    const svgElement = parser.parseFromString(svgStr, 'image/svg+xml').documentElement;
-    buttonContainer.appendChild(yesButton);
-    content.appendChild(svgElement);
-    content.appendChild(strong);
-    content.appendChild(buttonContainer);
-    card.appendChild(content);
-    overlay.appendChild(card);
-    document.body.appendChild(overlay);
-    yesButton.addEventListener("click", () => {
-      const response: Response = { result: true, detail: "" };
-      closeDialog();
-    });
-
-    const closeDialog = () => {
-      overlay.remove();
-    };
-  }
 
 };
 
