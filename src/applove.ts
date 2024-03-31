@@ -87,7 +87,7 @@ export const applove = {
     });
   },
 
-  success: ({ title = "Example", ExitButtonLabel = "Close" }: GeneralOption): void => {
+  success: ({ title = "Example", exitButtonLabel = "Close" }: GeneralOption): void => {
     const overlay = document.createElement("div");
     overlay.className = "popup-overlay";
     const card = document.createElement("div");
@@ -101,7 +101,7 @@ export const applove = {
 
     const yesButton = document.createElement("button");
     yesButton.className = "btn-default true-button";
-    yesButton.textContent = ExitButtonLabel;
+    yesButton.textContent = exitButtonLabel;
 
     const svgStr = svgIcon("success");
     const parser = new DOMParser();
@@ -142,7 +142,7 @@ export const applove = {
     };
   },
 
-  error: ({ title = "Example", ExitButtonLabel = "Close" }: GeneralOption): void => {
+  error: ({ title = "Example", exitButtonLabel = "Close" }: GeneralOption): void => {
     const overlay = document.createElement("div");
     overlay.className = "popup-overlay";
     const card = document.createElement("div");
@@ -156,7 +156,7 @@ export const applove = {
 
     const yesButton = document.createElement("button");
     yesButton.className = "btn-default true-button";
-    yesButton.textContent = ExitButtonLabel;
+    yesButton.textContent = exitButtonLabel;
 
     const svgStr = svgIcon("error");
     const parser = new DOMParser();
@@ -196,7 +196,7 @@ export const applove = {
       }
     };
   },
-  warning: ({ title = "Example", ExitButtonLabel = "Close" }: GeneralOption): void => {
+  warning: ({ title = "Example", exitButtonLabel = "Close" }: GeneralOption): void => {
     const overlay = document.createElement("div");
     overlay.className = "popup-overlay";
     const card = document.createElement("div");
@@ -210,7 +210,7 @@ export const applove = {
 
     const yesButton = document.createElement("button");
     yesButton.className = "btn-default true-button";
-    yesButton.textContent = ExitButtonLabel;
+    yesButton.textContent = exitButtonLabel;
 
     const svgStr = svgIcon("warning");
     const parser = new DOMParser();
@@ -250,7 +250,7 @@ export const applove = {
       }
     };
   },
-  info: ({ title = "Example", ExitButtonLabel = "Close" }: GeneralOption): void => {
+  info: ({ title = "Example", exitButtonLabel = "Close" }: GeneralOption): void => {
     const overlay = document.createElement("div");
     overlay.className = "popup-overlay";
     const card = document.createElement("div");
@@ -264,7 +264,7 @@ export const applove = {
 
     const yesButton = document.createElement("button");
     yesButton.className = "btn-default true-button";
-    yesButton.textContent = ExitButtonLabel;
+    yesButton.textContent = exitButtonLabel;
 
     const svgStr = svgIcon("info");
     const parser = new DOMParser();

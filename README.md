@@ -42,22 +42,22 @@ applove.confirm({
 ```javascript
 applove.success({ 
     title: "Operation successful", 
-    ExitButtonLabel: "Close" 
+    exitButtonLabel: "Close" 
 });
 
 applove.error({ 
     title: "Error occurred", 
-    ExitButtonLabel: "Close" 
+    exitButtonLabel: "Close" 
 });
 
 applove.warning({ 
     title: "Warning", 
-    ExitButtonLabel: "Ok" 
+    exitButtonLabel: "Close" 
 });
 
 applove.info({ 
     title: "Information", 
-    ExitButtonLabel: "Ok" 
+    exitButtonLabel: "Close" 
 });
 
 

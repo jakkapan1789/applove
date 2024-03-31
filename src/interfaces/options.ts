@@ -14,7 +14,7 @@ export interface ConfirmOption {
 export interface GeneralOption {
     title: string;
     text?: string;
-    ExitButtonLabel?: string;
+    exitButtonLabel?: string;
     showIcon: boolean;
     iconCustom: {
         width?: string;
