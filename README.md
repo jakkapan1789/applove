@@ -14,7 +14,7 @@ npm i applove
 
 #### Screenshots
 
-![Local Image](example-confirm.png)
+![Local Image](https://github.com/jakkapan1789/applove/blob/main/example-confirm.png)
 ```javascript
 
 import applove from 'applove'
@@ -38,8 +38,7 @@ applove.confirm({
 
 ### Here is example useage applove, for alert success, error or something like that.
 #### Screenshots
-
-![Local Image](example-success.png)
+![Local Image](https://github.com/jakkapan1789/applove/blob/main/example-success.png)
 ```javascript
 applove.success({ 
     title: "Operation successful", 
