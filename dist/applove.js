@@ -1,7 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.applove = void 0;
-require("./applove.css");
 const svgIcon = (type) => {
     if (type === "warning") {
         return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zm0-384c13.3 0 24 10.7 24 24V264c0 13.3-10.7 24-24 24s-24-10.7-24-24V152c0-13.3 10.7-24 24-24zM224 352a32 32 0 1 1 64 0 32 32 0 1 1 -64 0z"/></svg>';
@@ -17,233 +16,309 @@ const svgIcon = (type) => {
     }
     return '<svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 512 512"><path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM369 209L241 337c-9.4 9.4-24.6 9.4-33.9 0l-64-64c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0l47 47L335 175c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9z"/></svg>';
 };
+const popupOverlay = `
+position: fixed;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+background-color: rgba(0, 0, 0, 0.5);
+display: flex;
+align-items: center;
+justify-content: center;
+z-index: 1000;
+opacity: 0; 
+transition: opacity 0.3s ease; `;
+const popupCard = `
+position: relative;
+background-color: #fff;
+padding: 32px;
+border-radius: 10px;
+box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+max-width: 420px;
+width: 100%;
+margin: 25px;
+opacity: 0; 
+transform: translateY(50px); 
+transition: opacity 0.3s ease, transform 0.3s ease;
+`;
+const popupContent = `
+display: flex;
+align-items: center;
+flex-direction: column;
+margin-top: 5px;
+`;
+const styleTrueButton = `
+font-family: 'Kanit', sans-serif;
+margin-right: 5px;
+background-color: #000000CC;
+color: white;
+height: 40px;
+padding: 0px 20px;
+border: none;
+border-radius: 15px;
+font-size: 16px;
+cursor: pointer;
+`;
+const styleFalseButton = `
+font-family: 'Kanit', sans-serif;
+  margin-left: 5px;
+  background-color: white;
+  color: #000000CC;
+  height: 40px;
+  padding: 0px 20px;
+  border: 1px solid #000000CC;
+  border-radius: 15px;
+  font-size: 16px;
+  cursor: pointer;
+`;
 exports.applove = {
-    confirm: ({ title = "Please confirm", confirmButtonLabel = "Confirm", cancelButtonLabel = "Cancel", type = "question" }) => {
+    confirm: ({ title = "Please confirm", confirmButtonLabel = "Confirm", cancelButtonLabel = "Cancel", type = "question", iconColor = "currentColor", fontFamily = "'Kanit', sans-serif" }) => {
         return new Promise((resolve, reject) => {
+            document.body.style.fontFamily = fontFamily;
             const overlay = document.createElement("div");
-            overlay.className = "popup-overlay";
+            overlay.style.cssText = popupOverlay;
             const card = document.createElement("div");
-            card.className = "popup-card";
+            card.style.cssText = popupCard;
             const content = document.createElement("div");
-            content.className = "popup-content";
+            content.style.cssText = popupContent;
             const strong = document.createElement("strong");
             strong.textContent = title;
+            strong.style.marginTop = "15px";
+            strong.style.fontSize = "24px";
+            strong.style.color = "#000000CC";
             const buttonContainer = document.createElement("div");
-            buttonContainer.className = "button-container";
-            const yesButton = document.createElement("button");
-            yesButton.className = "btn-default true-button";
-            yesButton.textContent = confirmButtonLabel;
-            const noButton = document.createElement("button");
-            noButton.className = "btn-default false-button";
-            noButton.textContent = cancelButtonLabel;
+            buttonContainer.style.marginTop = "13px";
+            const trueButton = document.createElement("button");
+            trueButton.style.cssText = styleTrueButton;
+            trueButton.textContent = confirmButtonLabel;
+            const falseButton = document.createElement("button");
+            falseButton.style.cssText = styleFalseButton;
+            falseButton.textContent = cancelButtonLabel;
             const svgStr = svgIcon(type);
             const parser = new DOMParser();
-            const svgElement = parser.parseFromString(svgStr, "image/svg+xml").documentElement;
-            buttonContainer.appendChild(yesButton);
-            buttonContainer.appendChild(noButton);
+            const svgDoc = parser.parseFromString(svgStr, "image/svg+xml");
+            const svgElement = svgDoc.documentElement;
+            svgElement.setAttribute("fill", iconColor);
+            buttonContainer.appendChild(trueButton);
+            buttonContainer.appendChild(falseButton);
             content.appendChild(svgElement);
             content.appendChild(strong);
             content.appendChild(buttonContainer);
             card.appendChild(content);
             overlay.appendChild(card);
             document.body.appendChild(overlay);
-            yesButton.addEventListener("click", () => {
+            trueButton.addEventListener("click", () => {
                 const response = { result: true, detail: "" };
                 resolve(response);
                 close();
             });
-            noButton.addEventListener("click", () => {
+            falseButton.addEventListener("click", () => {
                 const response = { result: false, detail: "" };
                 resolve(response);
                 close();
             });
             setTimeout(() => {
-                overlay.classList.add("open");
-                card.classList.add("open");
+                overlay.style.opacity = "1";
+                card.style.opacity = "1";
+                card.style.transform = "translateY(0)";
             }, 10);
             const close = () => {
-                const overlay = document.querySelector(".popup-overlay");
-                const card = document.querySelector(".popup-card");
-                if (overlay && card) {
-                    overlay.classList.remove("open");
-                    card.classList.remove("open");
-                    setTimeout(() => {
-                        overlay.remove();
-                    }, 300);
-                }
+                overlay.style.opacity = "0";
+                card.style.opacity = "0";
+                card.style.transform = "translateY(50px)";
+                setTimeout(() => {
+                    overlay.remove();
+                }, 300);
             };
         });
     },
-    success: ({ title = "Example", ExitButtonLabel = "Close" }) => {
+    success: ({ title = "Example", exitButtonLabel = "Close", iconColor = "currentColor", fontFamily = "'Kanit', sans-serif" }) => {
+        document.body.style.fontFamily = fontFamily;
         const overlay = document.createElement("div");
-        overlay.className = "popup-overlay";
+        overlay.style.cssText = popupOverlay;
         const card = document.createElement("div");
-        card.className = "popup-card";
+        card.style.cssText = popupCard;
         const content = document.createElement("div");
-        content.className = "popup-content";
+        content.style.cssText = popupContent;
         const strong = document.createElement("strong");
         strong.textContent = title;
+        strong.style.marginTop = "15px";
+        strong.style.fontSize = "24px";
+        strong.style.color = "#000000CC";
         const buttonContainer = document.createElement("div");
-        buttonContainer.className = "button-container";
-        const yesButton = document.createElement("button");
-        yesButton.className = "btn-default true-button";
-        yesButton.textContent = ExitButtonLabel;
+        buttonContainer.style.marginTop = "13px";
+        const trueButton = document.createElement("button");
+        trueButton.style.cssText = styleFalseButton;
+        trueButton.textContent = exitButtonLabel;
         const svgStr = svgIcon("success");
         const parser = new DOMParser();
-        const svgElement = parser.parseFromString(svgStr, "image/svg+xml").documentElement;
-        buttonContainer.appendChild(yesButton);
+        const svgDoc = parser.parseFromString(svgStr, "image/svg+xml");
+        const svgElement = svgDoc.documentElement;
+        svgElement.setAttribute("fill", iconColor);
+        buttonContainer.appendChild(trueButton);
         content.appendChild(svgElement);
         content.appendChild(strong);
         content.appendChild(buttonContainer);
         card.appendChild(content);
         overlay.appendChild(card);
         document.body.appendChild(overlay);
-        yesButton.addEventListener("click", () => {
+        trueButton.addEventListener("click", () => {
             close();
         });
         setTimeout(() => {
-            overlay.classList.add("open");
-            card.classList.add("open");
+            overlay.style.opacity = "1";
+            card.style.opacity = "1";
+            card.style.transform = "translateY(0)";
         }, 10);
         const close = () => {
-            const overlay = document.querySelector(".popup-overlay");
-            const card = document.querySelector(".popup-card");
-            if (overlay && card) {
-                overlay.classList.remove("open");
-                card.classList.remove("open");
-                setTimeout(() => {
-                    overlay.remove();
-                }, 300);
-            }
+            overlay.style.opacity = "0";
+            card.style.opacity = "0";
+            card.style.transform = "translateY(50px)";
+            setTimeout(() => {
+                overlay.remove();
+            }, 300);
         };
     },
-    error: ({ title = "Example", ExitButtonLabel = "Close" }) => {
+    error: ({ title = "Example", exitButtonLabel = "Close", iconColor = "currentColor", fontFamily = "'Kanit', sans-serif" }) => {
+        document.body.style.fontFamily = fontFamily;
         const overlay = document.createElement("div");
-        overlay.className = "popup-overlay";
+        overlay.style.cssText = popupOverlay;
         const card = document.createElement("div");
-        card.className = "popup-card";
+        card.style.cssText = popupCard;
         const content = document.createElement("div");
-        content.className = "popup-content";
+        content.style.cssText = popupContent;
         const strong = document.createElement("strong");
         strong.textContent = title;
+        strong.style.marginTop = "15px";
+        strong.style.fontSize = "24px";
+        strong.style.color = "#000000CC";
         const buttonContainer = document.createElement("div");
-        buttonContainer.className = "button-container";
-        const yesButton = document.createElement("button");
-        yesButton.className = "btn-default true-button";
-        yesButton.textContent = ExitButtonLabel;
+        buttonContainer.style.marginTop = "13px";
+        const trueButton = document.createElement("button");
+        trueButton.style.cssText = styleFalseButton;
+        trueButton.textContent = exitButtonLabel;
         const svgStr = svgIcon("error");
         const parser = new DOMParser();
-        const svgElement = parser.parseFromString(svgStr, "image/svg+xml").documentElement;
-        buttonContainer.appendChild(yesButton);
+        const svgDoc = parser.parseFromString(svgStr, "image/svg+xml");
+        const svgElement = svgDoc.documentElement;
+        svgElement.setAttribute("fill", iconColor);
+        buttonContainer.appendChild(trueButton);
         content.appendChild(svgElement);
         content.appendChild(strong);
         content.appendChild(buttonContainer);
         card.appendChild(content);
         overlay.appendChild(card);
         document.body.appendChild(overlay);
-        yesButton.addEventListener("click", () => {
+        trueButton.addEventListener("click", () => {
             close();
         });
         setTimeout(() => {
-            overlay.classList.add("open");
-            card.classList.add("open");
+            overlay.style.opacity = "1";
+            card.style.opacity = "1";
+            card.style.transform = "translateY(0)";
         }, 10);
         const close = () => {
-            const overlay = document.querySelector(".popup-overlay");
-            const card = document.querySelector(".popup-card");
-            if (overlay && card) {
-                overlay.classList.remove("open");
-                card.classList.remove("open");
-                setTimeout(() => {
-                    overlay.remove();
-                }, 300);
-            }
+            overlay.style.opacity = "0";
+            card.style.opacity = "0";
+            card.style.transform = "translateY(50px)";
+            setTimeout(() => {
+                overlay.remove();
+            }, 300);
         };
     },
-    warning: ({ title = "Example", ExitButtonLabel = "Close" }) => {
+    warning: ({ title = "Example", exitButtonLabel = "Close", iconColor = "currentColor", fontFamily = "'Kanit', sans-serif" }) => {
+        document.body.style.fontFamily = fontFamily;
         const overlay = document.createElement("div");
-        overlay.className = "popup-overlay";
+        overlay.style.cssText = popupOverlay;
         const card = document.createElement("div");
-        card.className = "popup-card";
+        card.style.cssText = popupCard;
         const content = document.createElement("div");
-        content.className = "popup-content";
+        content.style.cssText = popupContent;
         const strong = document.createElement("strong");
         strong.textContent = title;
+        strong.style.marginTop = "15px";
+        strong.style.fontSize = "24px";
+        strong.style.color = "#000000CC";
         const buttonContainer = document.createElement("div");
-        buttonContainer.className = "button-container";
-        const yesButton = document.createElement("button");
-        yesButton.className = "btn-default true-button";
-        yesButton.textContent = ExitButtonLabel;
+        buttonContainer.style.marginTop = "13px";
+        const trueButton = document.createElement("button");
+        trueButton.style.cssText = styleFalseButton;
+        trueButton.textContent = exitButtonLabel;
         const svgStr = svgIcon("warning");
         const parser = new DOMParser();
-        const svgElement = parser.parseFromString(svgStr, "image/svg+xml").documentElement;
-        buttonContainer.appendChild(yesButton);
+        const svgDoc = parser.parseFromString(svgStr, "image/svg+xml");
+        const svgElement = svgDoc.documentElement;
+        svgElement.setAttribute("fill", iconColor);
+        buttonContainer.appendChild(trueButton);
         content.appendChild(svgElement);
         content.appendChild(strong);
         content.appendChild(buttonContainer);
         card.appendChild(content);
         overlay.appendChild(card);
         document.body.appendChild(overlay);
-        yesButton.addEventListener("click", () => {
+        trueButton.addEventListener("click", () => {
             close();
         });
         setTimeout(() => {
-            overlay.classList.add("open");
-            card.classList.add("open");
+            overlay.style.opacity = "1";
+            card.style.opacity = "1";
+            card.style.transform = "translateY(0)";
         }, 10);
         const close = () => {
-            const overlay = document.querySelector(".popup-overlay");
-            const card = document.querySelector(".popup-card");
-            if (overlay && card) {
-                overlay.classList.remove("open");
-                card.classList.remove("open");
-                setTimeout(() => {
-                    overlay.remove();
-                }, 300);
-            }
+            overlay.style.opacity = "0";
+            card.style.opacity = "0";
+            card.style.transform = "translateY(50px)";
+            setTimeout(() => {
+                overlay.remove();
+            }, 300);
         };
     },
-    info: ({ title = "Example", ExitButtonLabel = "Close" }) => {
+    info: ({ title = "Example", exitButtonLabel = "Close", iconColor = "currentColor", fontFamily = "'Kanit', sans-serif" }) => {
+        document.body.style.fontFamily = fontFamily;
         const overlay = document.createElement("div");
-        overlay.className = "popup-overlay";
+        overlay.style.cssText = popupOverlay;
         const card = document.createElement("div");
-        card.className = "popup-card";
+        card.style.cssText = popupCard;
         const content = document.createElement("div");
-        content.className = "popup-content";
+        content.style.cssText = popupContent;
         const strong = document.createElement("strong");
         strong.textContent = title;
+        strong.style.marginTop = "15px";
+        strong.style.fontSize = "24px";
+        strong.style.color = "#000000CC";
         const buttonContainer = document.createElement("div");
-        buttonContainer.className = "button-container";
-        const yesButton = document.createElement("button");
-        yesButton.className = "btn-default true-button";
-        yesButton.textContent = ExitButtonLabel;
+        buttonContainer.style.marginTop = "13px";
+        const trueButton = document.createElement("button");
+        trueButton.style.cssText = styleFalseButton;
+        trueButton.textContent = exitButtonLabel;
         const svgStr = svgIcon("info");
         const parser = new DOMParser();
-        const svgElement = parser.parseFromString(svgStr, "image/svg+xml").documentElement;
-        buttonContainer.appendChild(yesButton);
+        const svgDoc = parser.parseFromString(svgStr, "image/svg+xml");
+        const svgElement = svgDoc.documentElement;
+        svgElement.setAttribute("fill", iconColor);
+        buttonContainer.appendChild(trueButton);
         content.appendChild(svgElement);
         content.appendChild(strong);
         content.appendChild(buttonContainer);
         card.appendChild(content);
         overlay.appendChild(card);
         document.body.appendChild(overlay);
-        yesButton.addEventListener("click", () => {
+        trueButton.addEventListener("click", () => {
             close();
         });
         setTimeout(() => {
-            overlay.classList.add("open");
-            card.classList.add("open");
+            overlay.style.opacity = "1";
+            card.style.opacity = "1";
+            card.style.transform = "translateY(0)";
         }, 10);
         const close = () => {
-            const overlay = document.querySelector(".popup-overlay");
-            const card = document.querySelector(".popup-card");
-            if (overlay && card) {
-                overlay.classList.remove("open");
-                card.classList.remove("open");
-                setTimeout(() => {
-                    overlay.remove();
-                }, 300);
-            }
+            overlay.style.opacity = "0";
+            card.style.opacity = "0";
+            card.style.transform = "translateY(50px)";
+            setTimeout(() => {
+                overlay.remove();
+            }, 300);
         };
     },
 };
