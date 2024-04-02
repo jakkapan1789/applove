@@ -1,12 +1,13 @@
 {
   "name": "applove",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
     "dist"
   ],
+  "keywords": ["dialog", "alert", "message alert","consent"],
   "scripts": {
     "build": "mkdir -p dist && tsc",
     "prepublishOnly": "npm run build"
@@ -18,3 +19,4 @@
     "typescript": "^4.9.5"
   }
 }
+
