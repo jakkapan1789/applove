@@ -25,9 +25,10 @@ background-color: rgba(0, 0, 0, 0.5);
 display: flex;
 align-items: center;
 justify-content: center;
-z-index: 1000;
+z-index: 9999;
 opacity: 0; 
 transition: opacity 0.3s ease; `;
+
 const popupCard = `
 position: relative;
 background-color: #fff;
@@ -88,6 +89,8 @@ export const applove = {
       strong.style.marginTop = "15px";
       strong.style.fontSize = "24px";
       strong.style.color = "#000000CC";
+      strong.style.display = "block";
+      strong.style.textAlign = "center";
       const buttonContainer = document.createElement("div");
       buttonContainer.style.marginTop = "13px";
       const trueButton = document.createElement("button");
@@ -136,216 +139,293 @@ export const applove = {
 
     });
   },
+  success: ({ title = "Example", exitButtonLabel = "Close", iconColor = "currentColor", fontFamily = "'Kanit', sans-serif" }: GeneralOption): Promise<Response> => {
+    return new Promise<Response>((resolve, reject) => {
+      document.body.style.fontFamily = fontFamily;
+      const overlay = document.createElement("div");
+      overlay.style.cssText = popupOverlay;
+      const card = document.createElement("div");
+      card.style.cssText = popupCard;
+      const content = document.createElement("div");
+      content.style.cssText = popupContent;
+      const strong = document.createElement("strong");
+      strong.textContent = title;
+      strong.style.marginTop = "15px";
+      strong.style.fontSize = "24px";
+      strong.style.color = "#000000CC";
+      strong.style.display = "block";
+      strong.style.textAlign = "center";
+      const buttonContainer = document.createElement("div");
+      buttonContainer.style.marginTop = "13px";
+      const trueButton = document.createElement("button");
+      trueButton.style.cssText = styleFalseButton;
+      trueButton.textContent = exitButtonLabel;
 
-  success: ({ title = "Example", exitButtonLabel = "Close", iconColor = "currentColor", fontFamily = "'Kanit', sans-serif" }: GeneralOption): void => {
+      const svgStr = svgIcon("success");
+      const parser = new DOMParser();
+      const svgDoc = parser.parseFromString(svgStr, "image/svg+xml");
+      const svgElement = svgDoc.documentElement;
+      svgElement.setAttribute("fill", iconColor);
+      buttonContainer.appendChild(trueButton);
 
-    document.body.style.fontFamily = fontFamily;
-    const overlay = document.createElement("div");
-    overlay.style.cssText = popupOverlay;
-    const card = document.createElement("div");
-    card.style.cssText = popupCard;
-    const content = document.createElement("div");
-    content.style.cssText = popupContent;
-    const strong = document.createElement("strong");
-    strong.textContent = title;
-    strong.style.marginTop = "15px";
-    strong.style.fontSize = "24px";
-    strong.style.color = "#000000CC";
-    const buttonContainer = document.createElement("div");
-    buttonContainer.style.marginTop = "13px";
-    const trueButton = document.createElement("button");
-    trueButton.style.cssText = styleFalseButton;
-    trueButton.textContent = exitButtonLabel;
+      content.appendChild(svgElement);
+      content.appendChild(strong);
+      content.appendChild(buttonContainer);
+      card.appendChild(content);
+      overlay.appendChild(card);
+      document.body.appendChild(overlay);
+      trueButton.addEventListener("click", () => {
+        const response: Response = { result: true, detail: "" };
+        resolve(response);
+        close();
+      });
 
-    const svgStr = svgIcon("success");
-    const parser = new DOMParser();
-    const svgDoc = parser.parseFromString(svgStr, "image/svg+xml");
-    const svgElement = svgDoc.documentElement;
-    svgElement.setAttribute("fill", iconColor);
-    buttonContainer.appendChild(trueButton);
-
-    content.appendChild(svgElement);
-    content.appendChild(strong);
-    content.appendChild(buttonContainer);
-    card.appendChild(content);
-    overlay.appendChild(card);
-    document.body.appendChild(overlay);
-    trueButton.addEventListener("click", () => {
-      close();
-    });
-
-    setTimeout(() => {
-      overlay.style.opacity = "1";
-      card.style.opacity = "1";
-      card.style.transform = "translateY(0)";
-    }, 10);
-
-    const close = () => {
-      overlay.style.opacity = "0";
-      card.style.opacity = "0";
-      card.style.transform = "translateY(50px)";
       setTimeout(() => {
-        overlay.remove();
-      }, 300);
-    };
+        overlay.style.opacity = "1";
+        card.style.opacity = "1";
+        card.style.transform = "translateY(0)";
+      }, 10);
+
+      const close = () => {
+        overlay.style.opacity = "0";
+        card.style.opacity = "0";
+        card.style.transform = "translateY(50px)";
+        setTimeout(() => {
+          overlay.remove();
+        }, 300);
+      };
+    });
+  },
+  error: ({ title = "Example", exitButtonLabel = "Close", iconColor = "currentColor", fontFamily = "'Kanit', sans-serif" }: GeneralOption): Promise<Response> => {
+    return new Promise<Response>((resolve, reject) => {
+      document.body.style.fontFamily = fontFamily;
+      const overlay = document.createElement("div");
+      overlay.style.cssText = popupOverlay;
+      const card = document.createElement("div");
+      card.style.cssText = popupCard;
+      const content = document.createElement("div");
+      content.style.cssText = popupContent;
+      const strong = document.createElement("strong");
+      strong.textContent = title;
+      strong.style.marginTop = "15px";
+      strong.style.fontSize = "24px";
+      strong.style.color = "#000000CC";
+      strong.style.display = "block";
+      strong.style.textAlign = "center";
+      const buttonContainer = document.createElement("div");
+      buttonContainer.style.marginTop = "13px";
+      const trueButton = document.createElement("button");
+      trueButton.style.cssText = styleFalseButton;
+      trueButton.textContent = exitButtonLabel;
+
+      const svgStr = svgIcon("error");
+      const parser = new DOMParser();
+      const svgDoc = parser.parseFromString(svgStr, "image/svg+xml");
+      const svgElement = svgDoc.documentElement;
+      svgElement.setAttribute("fill", iconColor);
+      buttonContainer.appendChild(trueButton);
+
+      content.appendChild(svgElement);
+      content.appendChild(strong);
+      content.appendChild(buttonContainer);
+      card.appendChild(content);
+      overlay.appendChild(card);
+      document.body.appendChild(overlay);
+      trueButton.addEventListener("click", () => {
+        const response: Response = { result: true, detail: "" };
+        resolve(response);
+        close();
+      });
+
+      setTimeout(() => {
+        overlay.style.opacity = "1";
+        card.style.opacity = "1";
+        card.style.transform = "translateY(0)";
+      }, 10);
+
+      const close = () => {
+        overlay.style.opacity = "0";
+        card.style.opacity = "0";
+        card.style.transform = "translateY(50px)";
+        setTimeout(() => {
+          overlay.remove();
+        }, 300);
+      };
+    });
+  },
+  warning: ({ title = "Example", exitButtonLabel = "Close", iconColor = "currentColor", fontFamily = "'Kanit', sans-serif" }: GeneralOption): Promise<Response> => {
+    return new Promise<Response>((resolve, reject) => {
+      document.body.style.fontFamily = fontFamily;
+      const overlay = document.createElement("div");
+      overlay.style.cssText = popupOverlay;
+      const card = document.createElement("div");
+      card.style.cssText = popupCard;
+      const content = document.createElement("div");
+      content.style.cssText = popupContent;
+      const strong = document.createElement("strong");
+      strong.textContent = title;
+      strong.style.marginTop = "15px";
+      strong.style.fontSize = "24px";
+      strong.style.color = "#000000CC";
+      strong.style.display = "block";
+      strong.style.textAlign = "center";
+      const buttonContainer = document.createElement("div");
+      buttonContainer.style.marginTop = "13px";
+      const trueButton = document.createElement("button");
+      trueButton.style.cssText = styleFalseButton;
+      trueButton.textContent = exitButtonLabel;
+
+      const svgStr = svgIcon("warning");
+      const parser = new DOMParser();
+      const svgDoc = parser.parseFromString(svgStr, "image/svg+xml");
+      const svgElement = svgDoc.documentElement;
+      svgElement.setAttribute("fill", iconColor);
+      buttonContainer.appendChild(trueButton);
+
+      content.appendChild(svgElement);
+      content.appendChild(strong);
+      content.appendChild(buttonContainer);
+      card.appendChild(content);
+      overlay.appendChild(card);
+      document.body.appendChild(overlay);
+      trueButton.addEventListener("click", () => {
+        const response: Response = { result: true, detail: "" };
+        resolve(response);
+        close();
+      });
+
+      setTimeout(() => {
+        overlay.style.opacity = "1";
+        card.style.opacity = "1";
+        card.style.transform = "translateY(0)";
+      }, 10);
+
+      const close = () => {
+        overlay.style.opacity = "0";
+        card.style.opacity = "0";
+        card.style.transform = "translateY(50px)";
+        setTimeout(() => {
+          overlay.remove();
+        }, 300);
+      };
+    });
+  },
+  info: ({ title = "Example", exitButtonLabel = "Close", iconColor = "currentColor", fontFamily = "'Kanit', sans-serif" }: GeneralOption): Promise<Response> => {
+    return new Promise<Response>((resolve, reject) => {
+      document.body.style.fontFamily = fontFamily;
+      const overlay = document.createElement("div");
+      overlay.style.cssText = popupOverlay;
+      const card = document.createElement("div");
+      card.style.cssText = popupCard;
+      const content = document.createElement("div");
+      content.style.cssText = popupContent;
+      const strong = document.createElement("strong");
+      strong.textContent = title;
+      strong.style.marginTop = "15px";
+      strong.style.fontSize = "24px";
+      strong.style.color = "#000000CC";
+      strong.style.display = "block";
+      strong.style.textAlign = "center";
+      const buttonContainer = document.createElement("div");
+      buttonContainer.style.marginTop = "13px";
+      const trueButton = document.createElement("button");
+      trueButton.style.cssText = styleFalseButton;
+      trueButton.textContent = exitButtonLabel;
+
+      const svgStr = svgIcon("info");
+      const parser = new DOMParser();
+      const svgDoc = parser.parseFromString(svgStr, "image/svg+xml");
+      const svgElement = svgDoc.documentElement;
+      svgElement.setAttribute("fill", iconColor);
+      buttonContainer.appendChild(trueButton);
+
+      content.appendChild(svgElement);
+      content.appendChild(strong);
+      content.appendChild(buttonContainer);
+      card.appendChild(content);
+      overlay.appendChild(card);
+      document.body.appendChild(overlay);
+      trueButton.addEventListener("click", () => {
+        const response: Response = { result: true, detail: "" };
+        resolve(response);
+        close();
+      });
+
+      setTimeout(() => {
+        overlay.style.opacity = "1";
+        card.style.opacity = "1";
+        card.style.transform = "translateY(0)";
+      }, 10);
+
+      const close = () => {
+        overlay.style.opacity = "0";
+        card.style.opacity = "0";
+        card.style.transform = "translateY(50px)";
+        setTimeout(() => {
+          overlay.remove();
+        }, 300);
+      };
+    });
+  },
+  question: ({ title = "Example", exitButtonLabel = "Close", iconColor = "currentColor", fontFamily = "'Kanit', sans-serif" }: GeneralOption): Promise<Response> => {
+    return new Promise<Response>((resolve, reject) => {
+      document.body.style.fontFamily = fontFamily;
+      const overlay = document.createElement("div");
+      overlay.style.cssText = popupOverlay;
+      const card = document.createElement("div");
+      card.style.cssText = popupCard;
+      const content = document.createElement("div");
+      content.style.cssText = popupContent;
+      const strong = document.createElement("strong");
+      strong.textContent = title;
+      strong.style.marginTop = "15px";
+      strong.style.fontSize = "24px";
+      strong.style.color = "#000000CC";
+      strong.style.display = "block";
+      strong.style.textAlign = "center";
+      const buttonContainer = document.createElement("div");
+      buttonContainer.style.marginTop = "13px";
+      const trueButton = document.createElement("button");
+      trueButton.style.cssText = styleFalseButton;
+      trueButton.textContent = exitButtonLabel;
+
+      const svgStr = svgIcon("question");
+      const parser = new DOMParser();
+      const svgDoc = parser.parseFromString(svgStr, "image/svg+xml");
+      const svgElement = svgDoc.documentElement;
+      svgElement.setAttribute("fill", iconColor);
+      buttonContainer.appendChild(trueButton);
+
+      content.appendChild(svgElement);
+      content.appendChild(strong);
+      content.appendChild(buttonContainer);
+      card.appendChild(content);
+      overlay.appendChild(card);
+      document.body.appendChild(overlay);
+      trueButton.addEventListener("click", () => {
+        const response: Response = { result: true, detail: "" };
+        resolve(response);
+        close();
+      });
+
+      setTimeout(() => {
+        overlay.style.opacity = "1";
+        card.style.opacity = "1";
+        card.style.transform = "translateY(0)";
+      }, 10);
+
+      const close = () => {
+        overlay.style.opacity = "0";
+        card.style.opacity = "0";
+        card.style.transform = "translateY(50px)";
+        setTimeout(() => {
+          overlay.remove();
+        }, 300);
+      };
+    });
   },
 
-  error: ({ title = "Example", exitButtonLabel = "Close", iconColor = "currentColor", fontFamily = "'Kanit', sans-serif" }: GeneralOption): void => {
 
-    document.body.style.fontFamily = fontFamily;
-    const overlay = document.createElement("div");
-    overlay.style.cssText = popupOverlay;
-    const card = document.createElement("div");
-    card.style.cssText = popupCard;
-    const content = document.createElement("div");
-    content.style.cssText = popupContent;
-    const strong = document.createElement("strong");
-    strong.textContent = title;
-    strong.style.marginTop = "15px";
-    strong.style.fontSize = "24px";
-    strong.style.color = "#000000CC";
-    const buttonContainer = document.createElement("div");
-    buttonContainer.style.marginTop = "13px";
-    const trueButton = document.createElement("button");
-    trueButton.style.cssText = styleFalseButton;
-    trueButton.textContent = exitButtonLabel;
-
-    const svgStr = svgIcon("error");
-    const parser = new DOMParser();
-    const svgDoc = parser.parseFromString(svgStr, "image/svg+xml");
-    const svgElement = svgDoc.documentElement;
-    svgElement.setAttribute("fill", iconColor);
-    buttonContainer.appendChild(trueButton);
-
-    content.appendChild(svgElement);
-    content.appendChild(strong);
-    content.appendChild(buttonContainer);
-    card.appendChild(content);
-    overlay.appendChild(card);
-    document.body.appendChild(overlay);
-    trueButton.addEventListener("click", () => {
-      close();
-    });
-
-    setTimeout(() => {
-      overlay.style.opacity = "1";
-      card.style.opacity = "1";
-      card.style.transform = "translateY(0)";
-    }, 10);
-
-    const close = () => {
-      overlay.style.opacity = "0";
-      card.style.opacity = "0";
-      card.style.transform = "translateY(50px)";
-      setTimeout(() => {
-        overlay.remove();
-      }, 300);
-    };
-  },
-  warning: ({ title = "Example", exitButtonLabel = "Close", iconColor = "currentColor", fontFamily = "'Kanit', sans-serif" }: GeneralOption): void => {
-
-    document.body.style.fontFamily = fontFamily;
-    const overlay = document.createElement("div");
-    overlay.style.cssText = popupOverlay;
-    const card = document.createElement("div");
-    card.style.cssText = popupCard;
-    const content = document.createElement("div");
-    content.style.cssText = popupContent;
-    const strong = document.createElement("strong");
-    strong.textContent = title;
-    strong.style.marginTop = "15px";
-    strong.style.fontSize = "24px";
-    strong.style.color = "#000000CC";
-    const buttonContainer = document.createElement("div");
-    buttonContainer.style.marginTop = "13px";
-    const trueButton = document.createElement("button");
-    trueButton.style.cssText = styleFalseButton;
-    trueButton.textContent = exitButtonLabel;
-
-    const svgStr = svgIcon("warning");
-    const parser = new DOMParser();
-    const svgDoc = parser.parseFromString(svgStr, "image/svg+xml");
-    const svgElement = svgDoc.documentElement;
-    svgElement.setAttribute("fill", iconColor);
-    buttonContainer.appendChild(trueButton);
-
-    content.appendChild(svgElement);
-    content.appendChild(strong);
-    content.appendChild(buttonContainer);
-    card.appendChild(content);
-    overlay.appendChild(card);
-    document.body.appendChild(overlay);
-    trueButton.addEventListener("click", () => {
-      close();
-    });
-
-    setTimeout(() => {
-      overlay.style.opacity = "1";
-      card.style.opacity = "1";
-      card.style.transform = "translateY(0)";
-    }, 10);
-
-    const close = () => {
-      overlay.style.opacity = "0";
-      card.style.opacity = "0";
-      card.style.transform = "translateY(50px)";
-      setTimeout(() => {
-        overlay.remove();
-      }, 300);
-    };
-  },
-  info: ({ title = "Example", exitButtonLabel = "Close", iconColor = "currentColor", fontFamily = "'Kanit', sans-serif" }: GeneralOption): void => {
-
-    document.body.style.fontFamily = fontFamily;
-    const overlay = document.createElement("div");
-    overlay.style.cssText = popupOverlay;
-    const card = document.createElement("div");
-    card.style.cssText = popupCard;
-    const content = document.createElement("div");
-    content.style.cssText = popupContent;
-    const strong = document.createElement("strong");
-    strong.textContent = title;
-    strong.style.marginTop = "15px";
-    strong.style.fontSize = "24px";
-    strong.style.color = "#000000CC";
-    const buttonContainer = document.createElement("div");
-    buttonContainer.style.marginTop = "13px";
-    const trueButton = document.createElement("button");
-    trueButton.style.cssText = styleFalseButton;
-    trueButton.textContent = exitButtonLabel;
-
-    const svgStr = svgIcon("info");
-    const parser = new DOMParser();
-    const svgDoc = parser.parseFromString(svgStr, "image/svg+xml");
-    const svgElement = svgDoc.documentElement;
-    svgElement.setAttribute("fill", iconColor);
-    buttonContainer.appendChild(trueButton);
-
-    content.appendChild(svgElement);
-    content.appendChild(strong);
-    content.appendChild(buttonContainer);
-    card.appendChild(content);
-    overlay.appendChild(card);
-    document.body.appendChild(overlay);
-    trueButton.addEventListener("click", () => {
-      close();
-    });
-
-    setTimeout(() => {
-      overlay.style.opacity = "1";
-      card.style.opacity = "1";
-      card.style.transform = "translateY(0)";
-    }, 10);
-
-    const close = () => {
-      overlay.style.opacity = "0";
-      card.style.opacity = "0";
-      card.style.transform = "translateY(50px)";
-      setTimeout(() => {
-        overlay.remove();
-      }, 300);
-    };
-  },
 };
 
 
