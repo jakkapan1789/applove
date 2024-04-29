@@ -28,7 +28,6 @@ justify-content: center;
 z-index: 9999;
 opacity: 0; 
 transition: opacity 0.3s ease; `;
-
 const popupCard = `
 position: relative;
 background-color: #fff;
@@ -112,6 +111,7 @@ export const applove = {
       card.appendChild(content);
       overlay.appendChild(card);
       document.body.appendChild(overlay);
+      trueButton.focus();
       trueButton.addEventListener("click", () => {
         const response: Response = { result: true, detail: "" };
         resolve(response);
@@ -174,6 +174,8 @@ export const applove = {
       card.appendChild(content);
       overlay.appendChild(card);
       document.body.appendChild(overlay);
+
+      trueButton.focus();
       trueButton.addEventListener("click", () => {
         const response: Response = { result: true, detail: "" };
         resolve(response);
@@ -231,6 +233,7 @@ export const applove = {
       card.appendChild(content);
       overlay.appendChild(card);
       document.body.appendChild(overlay);
+      trueButton.focus();
       trueButton.addEventListener("click", () => {
         const response: Response = { result: true, detail: "" };
         resolve(response);
@@ -288,6 +291,7 @@ export const applove = {
       card.appendChild(content);
       overlay.appendChild(card);
       document.body.appendChild(overlay);
+      trueButton.focus();
       trueButton.addEventListener("click", () => {
         const response: Response = { result: true, detail: "" };
         resolve(response);
@@ -345,6 +349,7 @@ export const applove = {
       card.appendChild(content);
       overlay.appendChild(card);
       document.body.appendChild(overlay);
+      trueButton.focus();
       trueButton.addEventListener("click", () => {
         const response: Response = { result: true, detail: "" };
         resolve(response);
@@ -402,6 +407,7 @@ export const applove = {
       card.appendChild(content);
       overlay.appendChild(card);
       document.body.appendChild(overlay);
+      trueButton.focus();
       trueButton.addEventListener("click", () => {
         const response: Response = { result: true, detail: "" };
         resolve(response);

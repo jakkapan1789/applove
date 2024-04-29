@@ -110,6 +110,7 @@ exports.applove = {
             card.appendChild(content);
             overlay.appendChild(card);
             document.body.appendChild(overlay);
+            trueButton.focus();
             trueButton.addEventListener("click", () => {
                 const response = { result: true, detail: "" };
                 resolve(response);
@@ -168,6 +169,7 @@ exports.applove = {
             card.appendChild(content);
             overlay.appendChild(card);
             document.body.appendChild(overlay);
+            trueButton.focus();
             trueButton.addEventListener("click", () => {
                 const response = { result: true, detail: "" };
                 resolve(response);
@@ -221,6 +223,7 @@ exports.applove = {
             card.appendChild(content);
             overlay.appendChild(card);
             document.body.appendChild(overlay);
+            trueButton.focus();
             trueButton.addEventListener("click", () => {
                 const response = { result: true, detail: "" };
                 resolve(response);
@@ -274,6 +277,7 @@ exports.applove = {
             card.appendChild(content);
             overlay.appendChild(card);
             document.body.appendChild(overlay);
+            trueButton.focus();
             trueButton.addEventListener("click", () => {
                 const response = { result: true, detail: "" };
                 resolve(response);
@@ -327,6 +331,7 @@ exports.applove = {
             card.appendChild(content);
             overlay.appendChild(card);
             document.body.appendChild(overlay);
+            trueButton.focus();
             trueButton.addEventListener("click", () => {
                 const response = { result: true, detail: "" };
                 resolve(response);
@@ -380,6 +385,7 @@ exports.applove = {
             card.appendChild(content);
             overlay.appendChild(card);
             document.body.appendChild(overlay);
+            trueButton.focus();
             trueButton.addEventListener("click", () => {
                 const response = { result: true, detail: "" };
                 resolve(response);
