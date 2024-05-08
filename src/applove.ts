@@ -176,6 +176,7 @@ export const applove = {
       document.body.appendChild(overlay);
 
       trueButton.focus();
+      
       trueButton.addEventListener("click", () => {
         const response: Response = { result: true, detail: "" };
         resolve(response);
