@@ -406,4 +406,103 @@ exports.applove = {
             };
         });
     },
+    asking: ({ title = "Please confirm", confirmButtonLabel = "Confirm", cancelButtonLabel = "Cancel", type = "question", iconColor = "currentColor", fontFamily = "'Kanit', sans-serif", errorLabel = "Input cannot be empty." }) => {
+        return new Promise((resolve, reject) => {
+            document.body.style.fontFamily = fontFamily;
+            const overlay = document.createElement("div");
+            overlay.style.cssText = popupOverlay;
+            const card = document.createElement("div");
+            card.style.cssText = popupCard;
+            const content = document.createElement("div");
+            content.style.cssText = popupContent;
+            const strong = document.createElement("strong");
+            strong.textContent = title;
+            strong.style.marginTop = "15px";
+            strong.style.fontSize = "24px";
+            strong.style.color = "#000000CC";
+            strong.style.display = "block";
+            strong.style.textAlign = "center";
+            // Create and style the input box
+            const inputBox = document.createElement("input");
+            inputBox.type = "text";
+            inputBox.style.marginTop = "10px";
+            inputBox.style.padding = "8px";
+            inputBox.style.fontSize = "16px";
+            inputBox.style.width = "calc(100% - 20px)";
+            inputBox.style.boxSizing = "border-box";
+            inputBox.style.display = "block";
+            inputBox.style.marginLeft = "auto";
+            inputBox.style.marginRight = "auto";
+            inputBox.style.borderRadius = "5px";
+            inputBox.style.border = "1px solid #ccc";
+            // Create and style the error message
+            const errorMessage = document.createElement("div");
+            errorMessage.textContent = errorLabel === "" ? "Input cannot be empty." : errorLabel;
+            errorMessage.style.color = "red";
+            errorMessage.style.fontSize = "14px";
+            errorMessage.style.textAlign = "left"; // Align left
+            errorMessage.style.marginTop = "5px";
+            errorMessage.style.marginLeft = "5px";
+            // errorMessage.style.marginLeft = "calc(10% + 10px)"; // Adjust margin to align with input box
+            errorMessage.style.display = "none"; // Hide it initially
+            const buttonContainer = document.createElement("div");
+            buttonContainer.style.marginTop = "13px";
+            const trueButton = document.createElement("button");
+            trueButton.style.cssText = styleTrueButton;
+            trueButton.textContent = confirmButtonLabel;
+            const falseButton = document.createElement("button");
+            falseButton.style.cssText = styleFalseButton;
+            falseButton.textContent = cancelButtonLabel;
+            const svgStr = svgIcon(type); // Adjusted to use the dynamic type
+            const parser = new DOMParser();
+            const svgDoc = parser.parseFromString(svgStr, "image/svg+xml");
+            const svgElement = svgDoc.documentElement;
+            svgElement.setAttribute("fill", iconColor);
+            buttonContainer.appendChild(trueButton);
+            buttonContainer.appendChild(falseButton);
+            content.appendChild(svgElement);
+            content.appendChild(strong);
+            content.appendChild(inputBox);
+            content.appendChild(errorMessage); // Append the error message
+            content.appendChild(buttonContainer);
+            card.appendChild(content);
+            overlay.appendChild(card);
+            document.body.appendChild(overlay);
+            inputBox.focus();
+            inputBox.addEventListener("input", () => {
+                if (inputBox.value.trim() !== "") {
+                    errorMessage.style.display = "none"; // Hide the error message
+                }
+            });
+            trueButton.addEventListener("click", () => {
+                if (inputBox.value.trim() === "") {
+                    errorMessage.style.display = "block"; // Show the error message
+                    inputBox.focus();
+                }
+                else {
+                    const response = { result: true, detail: inputBox.value };
+                    resolve(response);
+                    close();
+                }
+            });
+            falseButton.addEventListener("click", () => {
+                const response = { result: false, detail: "" };
+                resolve(response);
+                close();
+            });
+            setTimeout(() => {
+                overlay.style.opacity = "1";
+                card.style.opacity = "1";
+                card.style.transform = "translateY(0)";
+            }, 10);
+            const close = () => {
+                overlay.style.opacity = "0";
+                card.style.opacity = "0";
+                card.style.transform = "translateY(50px)";
+                setTimeout(() => {
+                    overlay.remove();
+                }, 300);
+            };
+        });
+    }
 };

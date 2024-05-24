@@ -13,6 +13,22 @@ export interface ConfirmOption {
     }
 }
 
+export interface AskingOption {
+    title: string;
+    text?: string;
+    type?: string;
+    errorLabel: string;
+    confirmButtonLabel?: string;
+    cancelButtonLabel?: string;
+    fontFamily?: string;
+    showIcon: boolean;
+    iconColor: string;
+    iconCustom: {
+        width?: string;
+        height?: string;
+    }
+}
+
 export interface GeneralOption {
     title: string;
     text?: string;
