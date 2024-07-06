@@ -32,7 +32,7 @@ const popupCard = `
 position: relative;
 background-color: #fff;
 padding: 32px;
-border-radius: 10px;
+border-radius: 12px;
 box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 max-width: 420px;
 width: 100%;
